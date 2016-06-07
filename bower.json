@@ -1,0 +1,30 @@
+{
+  "name": "planilhas",
+  "description": "biblioteca para leitura e escrita de planilhas eletrônicas em formato xlsx ou ods",
+  "main": "planilhas.js",
+  "authors": [
+    "Wancharle Sebastião Quirino"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "xls",
+    "xlsx",
+    "ods",
+    "calc",
+    "excel"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "js-xlsx": "wancharle/js-xlsx#wancharle",
+    "Blob.js": "wancharle/Blob.js#wancharle",
+    "file-saver": "wancharle/FileSaver.js#^1.3.1"
+  }
+}
