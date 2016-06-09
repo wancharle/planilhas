@@ -48,6 +48,17 @@ datenum = (v, date1904) ->
     ws['!ref'] = XLSX.utils.encode_range(range)
   return ws
  
+object2array = (obj,keys)-> keys.map((k)-> obj[k])
 
+@planilhas.json2matrix = (json) ->
+  array = []
+  if json.length > 0
+    keys = Object.keys(json[0])
+    array.push(keys)
+    for i in [0...json.length]
+      obj = object2array(json[i],keys)
+      array.push(obj)
+
+  return array
 # vim: set ts=2 sw=2 sts=2 expandtab:
 

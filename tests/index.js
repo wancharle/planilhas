@@ -9,6 +9,12 @@ chai.should();
 
 
 describe('planilhas',function (){
+    describe('.json2matrix',function(){
+        it("deve converter json para matrix",function(){
+            matrix = planilhas.json2matrix([{a:1,b:2},{a:3,b:4}]);      
+            matrix.should.be.deep.equal([['a','b'],[1,2],[3,4]]);
+        });
+    });
     describe('.Workbook',function(){
         it("deve pode criar uma planilha Workbook",function(){
             wb = new planilhas.Workbook()
