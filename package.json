@@ -20,7 +20,8 @@
   "author": "Wancharle Sebastião Quirino",
   "license": "Apache-2.0",
   "dependencies": {
-    "xlsx": "wancharle/js-xlsx#wancharle"
+    "xlsx": "wancharle/js-xlsx#wancharle",
+    "xlsx-style": "^0.8.13"
   },
   "devDependencies": {
     "coffee-script": "^1.10.0",

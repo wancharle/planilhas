@@ -8,14 +8,95 @@
   </head>
   <body>
     <div id="mocha"></div>
-    <script src="../node_modules/mocha/mocha.js"></script>
-    <script src="../node_modules/chai/chai.js"></script>
-    <script src="./bowerdeps.js"></script>
-    <script src="../planilhas.js"></script>
-    <script>mocha.setup('bdd');</script>
-    <script src="index.js"></script>
+
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/lodash/dist/lodash.min.js"></script>
+    <script src="../bower_components/jszip/dist/jszip.min.js"></script>
+    <script src="../bower_components/excel-builder-js/dist/excel-builder.dist.js"></script>
     <script>
-      mocha.run();
-    </script>
+    
+	function toDataUrl(url, callback){
+		var xhr = new XMLHttpRequest();
+		xhr.responseType = 'blob';
+		xhr.onload = function() {
+		  var reader  = new FileReader();
+		  reader.onloadend = function () {
+			  callback(reader.result);
+		  }
+		  reader.readAsDataURL(xhr.response);
+		};
+		xhr.open('GET', url);
+		xhr.send();
+	}
+
+    function click(imagedata){
+//console.log(imagedata);
+imagedata = imagedata.split(',')[1];
+      var EB = ExcelBuilder.Builder;
+      var workbook = ExcelBuilder.Builder.createWorkbook()
+      var worksheet = workbook.createWorksheet({name:"teste"})
+      window.worbook = workbook
+      workbook.addWorksheet(worksheet);
+      var stylesheet = workbook.getStyleSheet()
+      var currency = stylesheet.createFormat({
+                    format: '$#,##0.00'
+                        });
+        var red = 'FFFF0000';
+
+ picRef = workbook.addMedia( 'image',   'Imagem1.jpg' , imagedata);
+ var  pic = new ExcelBuilder.Drawing.Picture();
+ var drawings = new ExcelBuilder.Drawings();
+ var Positioning = ExcelBuilder.Positioning;
+pic.setMedia(picRef);
+drawings.addDrawing(pic);
+ pic.createAnchor( 'absoluteAnchor' , {
+ x: Positioning.pixelsToEMUs(300),
+ y: Positioning.pixelsToEMUs(300),
+ width: Positioning.pixelsToEMUs(300),
+ height: Positioning.pixelsToEMUs(300)
+ });
+
+worksheet.addDrawings(drawings);
+workbook.addDrawings(drawings);
+        var importantFormatter = stylesheet.createFormat({
+	font: {
+	bold: true,
+	color: red
+	},
+	border: {
+	bottom: {color: red, style: 'thin'},
+	top: {color: red, style: 'thin'},
+	left: {color: red, style: 'thin'},
+	right: {color: red, style: 'thin'}
+	}
+        });
+      var originalData = [
+          ['Artist', 'Album', 'Price'],
+              ['Buckethead', 'Albino Slug', { value:8.99,metadata: {style: importantFormatter.id }}],
+                  ['Buckethead', 'Electric Tears', {value:13.99,metadata:{style: currency.id}}],
+                      ['Buckethead', 'Colma', 11.34],
+                          ['Crystal Method', 'Vegas', 10.54],
+                              ['Crystal Method', 'Tweekend', 10.64],
+                                  ['Crystal Method', 'Divided By Night', 8.99]
+                                  ];
+
+    worksheet.setData(originalData);
+    worksheet.mergeCells('A2','B3');
+var data = EB.createFile(workbook);
+data.then(function(value){
+        $("#downloadLink").attr({
+         download: 'teste.xlsx',
+        href: 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + value
+                                });
+    })
+}
+
+toDataUrl('../Imagem1.jpg',function (imagedata){
+click(imagedata);
+});
+</script>
+     
+
+    <a  id='downloadLink'>Download Report</a>
   </body>
 </html>

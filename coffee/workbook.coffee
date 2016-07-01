@@ -25,8 +25,14 @@ class Workbook
   save: (options = Workbook.defaults)->
     @excelData = XLSX.write(@, options)
 
-  saveBlob:(filename="test.xlsx") ->
-    saveAs(new Blob([s2ab(@excelData)],{type:"application/octet-stream"}),filename)
+  saveBlob:(filename="test.xlsx",sheetname="Sheet", charset="iso-8859-1") ->
+    if filename.slice(-3).toLowerCase() == "csv"
+      console.log('oi')
+      csv = XLSX.utils.sheet_to_csv(@Sheets[sheetname])
+      console.log(csv)
+      saveAs(new Blob([csv],{type:"text/csv;charset="+charset+";"}),filename)
+    else
+      saveAs(new Blob([s2ab(@excelData)],{type:"application/octet-stream"}),filename)
 
   saveFile:(filename="test.xlsx") ->
     buffer=new Buffer(@excelData, 'binary')

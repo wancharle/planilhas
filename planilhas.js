@@ -146,13 +146,29 @@
       return this.excelData = XLSX.write(this, options);
     };
 
-    Workbook.prototype.saveBlob = function(filename) {
+    Workbook.prototype.saveBlob = function(filename, sheetname, charset) {
+      var csv;
       if (filename == null) {
         filename = "test.xlsx";
       }
-      return saveAs(new Blob([s2ab(this.excelData)], {
-        type: "application/octet-stream"
-      }), filename);
+      if (sheetname == null) {
+        sheetname = "Sheet";
+      }
+      if (charset == null) {
+        charset = "iso-8859-1";
+      }
+      if (filename.slice(-3).toLowerCase() === "csv") {
+        console.log('oi');
+        csv = XLSX.utils.sheet_to_csv(this.Sheets[sheetname]);
+        console.log(csv);
+        return saveAs(new Blob([csv], {
+          type: "text/csv;charset=" + charset + ";"
+        }), filename);
+      } else {
+        return saveAs(new Blob([s2ab(this.excelData)], {
+          type: "application/octet-stream"
+        }), filename);
+      }
     };
 
     Workbook.prototype.saveFile = function(filename) {

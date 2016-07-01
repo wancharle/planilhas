@@ -23,7 +23,6 @@
     "tests"
   ],
   "dependencies": {
-    "js-xlsx": "wancharle/js-xlsx#wancharle",
     "Blob.js": "wancharle/Blob.js#wancharle",
     "file-saver": "wancharle/FileSaver.js#^1.3.1"
   }

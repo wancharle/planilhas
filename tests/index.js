@@ -33,6 +33,18 @@ describe('planilhas',function (){
              wb.should.have.property('excelData');
      
         });
+        it ("deve poder salvar a planilha em csv", function (){
+             var wb = new planilhas.Workbook();
+             var sheet = [ ['a','b', 'c'],[1,2],[3,4],[5,6] ] 
+             wb.addSheet(sheet)
+             wb.save()
+             if (rodandoNoBrowser)
+                 wb.saveBlob('teste.csv')
+             else
+                 wb.saveFile('teste.csv')
+             wb.should.have.property('excelData');
+     
+        });
 
     });
 
