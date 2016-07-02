@@ -1,28 +1,23 @@
 {
   "name": "planilhas",
-  "version": "0.1.0",
-  "description": "biblioteca para leitura e escrita de planilhas eletrônicas em formato xlsx ou ods",
+  "version": "0.2.0",
+  "description": "biblioteca para escrita de planilhas eletrônicas em formato xlsx",
   "main": "planilhas.js",
   "scripts": {
     "test": "npm run bowerdeps; mocha tests/index.js",
     "cnode": "coffee  --output lib --compile coffee",
     "bowerdeps": "node bower_concat.js",
     "concat": "cat lib/planilhas.js lib/utils.js lib/workbook.js > planilhas.js",
-    "compile": "npm run bowerdeps; npm run cnode;npm run concat; npm run test;"
+    "compile": "npm run bowerdeps; npm run cnode;npm run concat;"
   },
   "keywords": [
     "xls",
     "xlsx",
-    "ods",
-    "calc",
     "excel"
   ],
   "author": "Wancharle Sebastião Quirino",
   "license": "Apache-2.0",
-  "dependencies": {
-    "xlsx": "wancharle/js-xlsx#wancharle",
-    "xlsx-style": "^0.8.13"
-  },
+
   "devDependencies": {
     "coffee-script": "^1.10.0",
     "chai": "^3.2.0",
