@@ -1,12 +1,35 @@
 chai.should();
 
 describe('planilhas',function (){
-    describe('.json2matrix',function(){
-        it("deve converter json para matrix",function(){
+    describe('utilidades',function(){
+        it(".json2matrix deve converter json para matrix",function(){
             matrix = planilhas.json2matrix([{a:1,b:2},{a:3,b:4}]);      
             matrix.should.be.deep.equal([['a','b'],[1,2],[3,4]]);
         });
+
+        it(".colname2colnum deve converter A, Z, AA, AB, AZ, BA, ZA, ZZ, AAA  para 0, 25, 26, 27, 51, 52, 676, 701, 702",function(){ 
+			result = ['a','Z','Aa','aB','AZ','BA','ZA','ZZ','AAA'].map(planilhas.colname2colnum) 
+			console.log('colname2colnum ->', result); 
+			result.should.be.deep.equal([0,25,26,27,51,52,676,701,702])
+        });
+        it(".colnum2colname deve converter 0, 25, 26, 27, 51, 52, 676, 701, 702 para A, Z, AA, AB, AZ, BA, ZA, ZZ, AAA ",function(){
+            result = [0,25,26,27,51,52,676,701,702].map(planilhas.colnum2colname)
+			console.log('colnum2colname ->', result);
+            result.should.be.deep.equal(['A','Z','AA','AB','AZ','BA','ZA','ZZ','AAA'])
+        });
+        it(".cellname2colrow deve converter A1, B2, AA22, ZZ1, AAA5000 para [0,0], [1,1], [26,21], [701,0], [702,4999]",function(){
+            result = ['a1','b2','AA22','zz1','AAA5000'].map(planilhas.cellname2colrow)
+			console.log('cellname2colrow ->', result);
+            result.should.be.deep.equal([ [0,0], [1,1], [26,21], [701,0], [702,4999] ]);
+        });
+        it(".colrow2cellname deve converter [0,0], [1,1], [26,21], [701,0], [702,4999] para A1, B2, AA22, ZZ1, AAA5000", function(){
+            result = [[0,0], [1,1], [26,21], [701,0], [702,4999] ].map(planilhas.colrow2cellname)
+			console.log('colrow2cellname ->', result);
+            result.should.be.deep.equal(['A1','B2','AA22','ZZ1','AAA5000'])
+        });
+ 
     });
+
     describe('.Workbook',function(){
         it("deve pode criar uma Workbook e salvar em xlsx e mesclar celulas",function(done){
             var wb = new planilhas.Workbook()

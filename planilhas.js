@@ -18,10 +18,10 @@
   };
 
   s2ab = function(s) {
-    var buf, i, j, ref, view;
+    var buf, i, l, ref, view;
     buf = new ArrayBuffer(s.length);
     view = new Uint8Array(buf);
-    for (i = j = 0, ref = s.length - 1; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
+    for (i = l = 0, ref = s.length - 1; 0 <= ref ? l < ref : l > ref; i = 0 <= ref ? ++l : --l) {
       view[i] = s.charCodeAt(i) & 0xFF;
     }
     return buf;
@@ -34,17 +34,63 @@
   };
 
   this.planilhas.json2matrix = function(json) {
-    var array, i, j, keys, obj, ref;
+    var array, i, keys, l, obj, ref;
     array = [];
     if (json.length > 0) {
       keys = Object.keys(json[0]);
       array.push(keys);
-      for (i = j = 0, ref = json.length; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
+      for (i = l = 0, ref = json.length; 0 <= ref ? l < ref : l > ref; i = 0 <= ref ? ++l : --l) {
         obj = object2array(json[i], keys);
         array.push(obj);
       }
     }
     return array;
+  };
+
+  this.planilhas.colname2colnum = function(name) {
+    var base, c, i, j, l, len1, ref, result;
+    base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    result = 0;
+    j = name.length;
+    ref = name.toUpperCase();
+    for (i = l = 0, len1 = ref.length; l < len1; i = ++l) {
+      c = ref[i];
+      j -= 1;
+      result += (base.indexOf(c) + 1) * Math.pow(base.length, j);
+    }
+    return result - 1;
+  };
+
+  this.planilhas.colnum2colname = function(n) {
+    var len, ordA, ordZ, s;
+    ordA = 'A'.charCodeAt(0);
+    ordZ = 'Z'.charCodeAt(0);
+    len = ordZ - ordA + 1;
+    s = "";
+    while (n >= 0) {
+      s = String.fromCharCode(n % len + ordA) + s;
+      n = Math.floor(n / len) - 1;
+    }
+    return s;
+  };
+
+  this.planilhas.splitCellname = function(cellname) {
+    return cellname.match(/[a-zA-Z]+|[0-9]+/g);
+  };
+
+  this.planilhas.cellname2colrow = function(cellname) {
+    var col, colname, ref, row;
+    ref = this.planilhas.splitCellname(cellname), colname = ref[0], row = ref[1];
+    col = this.planilhas.colname2colnum(colname);
+    row = row - 1;
+    return [col, row];
+  };
+
+  this.planilhas.colrow2cellname = function(colrow) {
+    var col, colname, row;
+    col = colrow[0], row = colrow[1];
+    colname = this.planilhas.colnum2colname(col);
+    return "" + colname + (row + 1);
   };
 
 }).call(this);
