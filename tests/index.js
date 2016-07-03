@@ -6,7 +6,6 @@ describe('planilhas',function (){
             matrix = planilhas.json2matrix([{a:1,b:2},{a:3,b:4}]);      
             matrix.should.be.deep.equal([['a','b'],[1,2],[3,4]]);
         });
-
         it(".colname2colnum deve converter A, Z, AA, AB, AZ, BA, ZA, ZZ, AAA  para 0, 25, 26, 27, 51, 52, 676, 701, 702",function(){ 
 			result = ['a','Z','Aa','aB','AZ','BA','ZA','ZZ','AAA'].map(planilhas.colname2colnum) 
 			console.log('colname2colnum ->', result); 
@@ -27,7 +26,44 @@ describe('planilhas',function (){
 			console.log('colrow2cellname ->', result);
             result.should.be.deep.equal(['A1','B2','AA22','ZZ1','AAA5000'])
         });
- 
+        it(".writeCellByName deve aumentar matrix de dados da planilha", function(){
+            planilha = { data: [ [1,2], [4,5] ] }
+            data = planilhas.writeCellByName(planilha,'c1',3)
+            data = planilhas.writeCellByName(planilha,'c2',6)
+            data = planilhas.writeCellByName(planilha,'d2',7)
+            data = planilhas.writeCellByName(planilha,'b3',8)
+            data = planilhas.writeCellByName(planilha,'a4',9)
+            console.log('writeCellByName -> ',JSON.stringify(data))
+            planilha.data.should.be.deep.equal([[1,2,3],[4,5,6,7],[null,8],[9]]);
+        });
+        it(".writeRangeByName deve escrever um mesmo dado numa range da planilha", function(){
+            planilha = { data: [ [1,2], [4,5] ] }
+            data = planilhas.writeRangeByName(planilha,'c2:d4',6)
+            data = planilhas.writeRangeByName(planilha,'a4:b4',7)
+            console.log('writeRangeByName -> ',JSON.stringify(planilha.data))
+            planilha.data.should.be.deep.equal([[1,2],[4,5,6,6],[null,null,6,6],[7,7,6,6]])
+        });
+        it(".writeCellByName deve escrever style", function(){
+            style = { id:1}
+            planilha = { data: [ [1,2], [3,4] ] }
+            data = planilhas.writeCellByName(planilha,'a3',5,style)
+            console.log('writeCellByName -Style -> ',JSON.stringify(planilha.data))
+            planilha.data.should.be.deep.equal([[1,2],[3,4],[{ value:5, metadata:{style:1}}]])
+        });
+        it(".writeCellByName deve escrever style sem alterar value da celula", function(){
+            style = { id:2}
+            planilha = { data: [ [1,2], [3,4], [7]] }
+            data = planilhas.writeCellByName(planilha,'a3',null,style)
+            console.log('writeCellByName - samevalue -> ',JSON.stringify(planilha.data))
+            planilha.data.should.be.deep.equal([[1,2],[3,4],[{ value:7, metadata:{style:2}}]])
+        });
+        it(".writeCellByName deve atualizar style sem alterar value da celula", function(){
+            style = { id:2}
+            planilha = { data: [ [1,2], [3,4], [{value:5,metadata:{style:1}}]] }
+            data = planilhas.writeCellByName(planilha,'a3',null,style)
+            console.log('writeCellByName - samevalue -> ',JSON.stringify(planilha.data))
+            planilha.data.should.be.deep.equal([[1,2],[3,4],[{ value:5, metadata:{style:2}}]])
+        });
     });
 
     describe('.Workbook',function(){
