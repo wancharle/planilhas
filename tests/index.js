@@ -52,10 +52,10 @@ describe('planilhas',function (){
         });
         it(".writeCellByName deve escrever style sem alterar value da celula", function(){
             style = { id:2}
-            planilha = { data: [ [1,2], [3,4], [7]] }
+            planilha = { data: [ [1,2], [3,4], [null]] }
             data = planilhas.writeCellByName(planilha,'a3',null,style)
             console.log('writeCellByName - samevalue -> ',JSON.stringify(planilha.data))
-            planilha.data.should.be.deep.equal([[1,2],[3,4],[{ value:7, metadata:{style:2}}]])
+            planilha.data.should.be.deep.equal([[1,2],[3,4],[{ value:null, metadata:{style:2}}]])
         });
         it(".writeCellByName deve atualizar style sem alterar value da celula", function(){
             style = { id:2}

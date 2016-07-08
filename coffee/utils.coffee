@@ -87,7 +87,7 @@ writeCell = (sheet,col,row,value,style) ->
     if value == null
       # aplica/altera style em celula existente sem alterar o conteudo
       value = sheet.data[row][col]
-      if typeof value == 'object'
+      if value and typeof value == 'object'
         value.metadata.style =  style.id
       else
         value = { value: value, metadata: { style: style.id }}

@@ -137,7 +137,7 @@
     if (style) {
       if (value === null) {
         value = sheet.data[row][col];
-        if (typeof value === 'object') {
+        if (value && typeof value === 'object') {
           value.metadata.style = style.id;
         } else {
           value = {
