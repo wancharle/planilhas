@@ -23,7 +23,7 @@
   "dependencies": {
     "Blob.js": "wancharle/Blob.js#wancharle",
     "file-saver": "wancharle/FileSaver.js#^1.3.1",
-    "excel-builder-js": "git@github.com:wancharle/excel-builder.js.git#wancharle"
+    "excel-builder-js": "wancharle/excel-builder.js#wancharle"
   },
   "devDependencies": {
     "q": "1.0.1"
